@@ -14,11 +14,12 @@ def day01b():
     freq = 0
     freqs = {}
     for change in cycle(changes):
-        freq += change
         try:
             return freqs[freq]
         except KeyError:
             freqs[freq] = freq
+        freq += change
 
 
+print(day01a())
 print(day01b())
