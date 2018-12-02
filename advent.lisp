@@ -54,9 +54,9 @@
          (first-string (nth 0 match))
          (second-string (nth 1 match)))
     (coerce (loop for char1 across first-string
-             for char2 across second-string
-             if (char= char1 char2)
-             collect char1)
+                  for char2 across second-string
+                  if (char= char1 char2)
+                  collect char1)
             'string)))
 
 
