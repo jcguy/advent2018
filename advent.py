@@ -23,17 +23,13 @@ def day01b():
 
 def day02a():
     words = read_input('input.02')
-    two_count = 0
-    three_count = 0
 
-    for word in words:
-        counts = {char: word.count(char) for char in word}
-        if 2 in counts.values():
-            two_count += 1
-        if 3 in counts.values():
-            three_count += 1
+    value = [
+        sum(2 in {c: w.count(c) for c in w}.values() for w in words),
+        sum(3 in {c: w.count(c) for c in w}.values() for w in words)
+    ]
 
-    return two_count * three_count
+    return value[0] * value[1]
 
 
 def day02b():
