@@ -33,28 +33,13 @@ def day02a():
 
 
 def day02b():
+    from itertools import product
     words = read_input('input.02')
 
-    def num_different(word1, word2):
-        diff_count = 0
-        diff = []
-        for a, b in zip(word1, word2):
-            if a != b:
-                diff_count += 1
-                diff.append(a)
-            if diff_count > 1:
-                return diff_count, None
-
-        if diff_count != 0:
-            return diff_count, "".join(word1.split(diff[0]))
-        else:
-            return diff_count, None
-
-    for word1 in words:
-        for word2 in words:
-            n, remaining = num_different(word1, word2)
-            if n == 1:
-                return remaining
+    for word1, word2 in product(words, repeat=2):
+        diffs = [i for i, (a, b) in enumerate(zip(word1, word2)) if a != b]
+        if len(diffs) == 1:
+            return word1[:diffs[0]] + word1[diffs[0]+1:]
 
 
 print(day02a())
