@@ -89,6 +89,5 @@ def day03b():
 
 
 
-print()
-print(day03a())
-print(day03b())
+for _ in range(1000):
+    day02b()
