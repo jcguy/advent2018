@@ -1,3 +1,6 @@
+#!/usr/bin/env python3
+
+
 def read_input(filename):
     with open(filename) as f:
         return [line.strip("\n") for line in f.readlines()]
@@ -88,6 +91,38 @@ def day03b():
     return idents.pop()
 
 
+def main(argv):
+    solutions = [
+        day01a,
+        day01b,
+        day02a,
+        day02b,
+        day03a,
+        day03b,
+    ]
 
-for _ in range(1000):
-    day02b()
+    if len(argv) == 1:
+        for solution in solutions:
+            print(solution())
+    elif len(argv) == 2:
+        day = int(argv[1])
+        print(solutions[2 * day - 2]())
+        print(solutions[2 * day - 1]())
+    elif len(argv) == 3:
+        day = int(argv[1])
+        part = argv[2]
+        if part == "a":
+            print(solutions[2 * day - 2]())
+        elif part == "b":
+            print(solutions[2 * day - 1]())
+
+
+in_emacs = True
+if __name__ == "__main__":
+    import sys
+    main(sys.argv)
+    in_emacs = False
+
+if in_emacs:
+    print()
+    main(["", "3"])
