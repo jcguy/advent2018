@@ -36,10 +36,15 @@ def day02b():
     from itertools import product
     words = read_input('input.02')
 
-    for word1, word2 in product(words, repeat=2):
-        diffs = [i for i, (a, b) in enumerate(zip(word1, word2)) if a != b]
-        if len(diffs) == 1:
-            return word1[:diffs[0]] + word1[diffs[0]+1:]
+    possible_matches = set()
+    for word in words:
+        new_set = set()
+        for i, _ in enumerate(word):
+            new_word = word[:i] + word[i+1:]
+            if new_word in possible_matches:
+                return new_word
+            new_set.add(new_word)
+        possible_matches |= new_set
 
 
 def day03a():
