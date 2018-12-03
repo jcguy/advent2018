@@ -52,7 +52,7 @@ def day02b():
 
 def day03a():
     claims = read_input('input.03')
-    fabric = {}
+    fabric = [[0 for _ in range(1000)] for _ in range(1000)]
 
     for claim in claims:
         ident, _, xy, wl = claim.split()
@@ -61,9 +61,14 @@ def day03a():
 
         for ix in range(x, x + w):
             for iy in range(y, y + l):
-                fabric[(ix, iy)] = fabric.get((ix, iy), 0) + 1
+                fabric[ix][iy] += 1
 
-    return len(list(filter(lambda x: x > 1, fabric.values())))
+    total = 0
+    for row in fabric:
+        for x in row:
+            if x > 1:
+                total += 1
+    return total
 
 
 def day03b():
