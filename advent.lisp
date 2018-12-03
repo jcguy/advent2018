@@ -59,6 +59,5 @@
                   collect char1)
             'string)))
 
-
 (day02a)
 (day02b)
