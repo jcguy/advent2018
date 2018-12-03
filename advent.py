@@ -4,21 +4,19 @@ def read_input(filename):
 
 
 def day01a():
-    changes = map(int, read_input("input.01"))
-    return sum(changes)
+    return sum(map(int, read_input("input.01")))
 
 
 def day01b():
     from itertools import cycle
-    changes = map(int, read_input("input.01"))
+    deltas = map(int, read_input("input.01"))
     freq = 0
-    freqs = {}
-    for change in cycle(changes):
-        try:
-            return freqs[freq]
-        except KeyError:
-            freqs[freq] = freq
-        freq += change
+    freqs = set()
+    for delta in cycle(deltas):
+        if freq in freqs:
+            return freq
+        freqs.add(freq)
+        freq += delta
 
 
 def day02a():
