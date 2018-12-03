@@ -44,72 +44,44 @@ def day02b():
 
 def day03a():
     claims = read_input('input.03')
-    fabric = []
-    for _ in range(1000):
-        fabric.append([])
-
-    for r in fabric:
-        for _ in range(1000):
-            r.append(0)
+    fabric = [[0 for _ in range(1000)] for _ in range(1000)]
 
     for claim in claims:
         ident, _, xy, wl = claim.split()
-        x, y = xy.strip(":").split(",")
-        w, l = wl.split("x")
+        x, y = map(int, xy.strip(":").split(","))
+        w, l = map(int, wl.split("x"))
 
-        x = int(x)
-        y = int(y)
-        w = int(w)
-        l = int(l)
+        for ix in range(x, x + w):
+            for iy in range(y, y + l):
+                fabric[ix][iy] += 1
 
-        for ix in range(w):
-            for iy in range(l):
-                fabric[x + ix][y + iy] += 1
-
-    total = 0
-    for row in fabric:
-        for col in row:
-            if col > 1:
-                total += 1
-
-    return total
+    return sum([sum([1 for x in row if x > 1]) for row in fabric])
 
 
 def day03b():
     claims = read_input('input.03')
-    fabric = []
-    for _ in range(1000):
-        fabric.append([])
-
-    for r in fabric:
-        for _ in range(1000):
-            r.append([])
-
+    fabric = [[[] for _ in range(1000)] for _ in range(1000)]
     idents = set()
 
     for claim in claims:
         ident, _, xy, wl = claim.split()
-        x, y = xy.strip(":").split(",")
-        w, l = wl.split("x")
+        x, y = map(int, xy.strip(":").split(","))
+        w, l = map(int, wl.split("x"))
+        ident = int(ident.strip("#"))
 
         idents.add(ident)
 
-        x = int(x)
-        y = int(y)
-        w = int(w)
-        l = int(l)
-
-        for ix in range(w):
-            for iy in range(l):
-                fabric[x + ix][y + iy].append(ident)
+        for ix in range(x, x + w):
+            for iy in range(y, y + l):
+                fabric[ix][iy].append(ident)
 
     for row in fabric:
-        for col in row:
-            if len(col) != 1:
-                for ident in col:
+        for x in row:
+            if len(x) > 1:
+                for ident in x:
                     idents.discard(ident)
 
-    return idents
+    return idents.pop()
 
 
 print()
