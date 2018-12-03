@@ -20,12 +20,14 @@ def day01b():
 
 
 def day02a():
+    from string import ascii_lowercase
     words = read_input('input.02')
 
-    value = [
-        sum(2 in {c: w.count(c) for c in w}.values() for w in words),
-        sum(3 in {c: w.count(c) for c in w}.values() for w in words)
-    ]
+    value = [0, 0]
+    for w in words:
+        counts = [w.count(c) for c in ascii_lowercase]
+        value[0] += (2 in counts)
+        value[1] += (3 in counts)
 
     return value[0] * value[1]
 
