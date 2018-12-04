@@ -113,46 +113,23 @@ def day04a():
         guard = int(shift[0].split()[3][1:])
         num_cycles = len(shift) // 2
 
-        time = []
         for i in range(num_cycles):
-            time.append(int(shift[2 * i + 1].split(":")[1].split("]")[0]))
-            time.append(int(shift[2 * i + 2].split(":")[1].split("]")[0]))
+            start_time = int(shift[2 * i + 1].split(":")[1].split("]")[0])
+            end_time = int(shift[2 * i + 2].split(":")[1].split("]")[0])
+            guards[guard] = guards.get(guard, []) + list(range(start_time, end_time))
 
-        try:
-            guards[guard] += time
-        except KeyError:
-            guards[guard] = time
-
-    sleep_lengths = {}
-    for guard, times in guards.items():
-        for i in range(len(times) // 2):
-            try:
-                sleep_lengths[guard] += times[2 * i + 1] - times[2 * i]
-            except KeyError:
-                sleep_lengths[guard] = times[2 * i + 1] - times[2 * i]
-
+    minutes_asleep = 0
     sleepiest_guard = 0
-    guard_minutes = 0
-
-    for guard, length in sleep_lengths.items():
-        if length > guard_minutes:
-            sleepiest_guard = guard
-            guard_minutes = length
-
     sleepiest_minute = 0
-    days_slept = 0
 
-    for minute in range(60):
-        num_days = 0
-        for i in range(len(guards[sleepiest_guard]) // 2):
-            if minute in range(guards[sleepiest_guard][2 * i],
-                               guards[sleepiest_guard][2 * i + 1]):
-                num_days += 1
-        if num_days > days_slept:
-            days_slept = num_days
-            sleepiest_minute = minute
+    for guard, minutes in guards.items():
+        if len(minutes) > minutes_asleep:
+            minutes_asleep = len(minutes)
+            sleepiest_guard = guard
+            counts = [minutes.count(m) for m in range(60)]
+            sleepiest_minute = counts.index(max(counts))
 
-    return sleepiest_minute * sleepiest_guard
+    return sleepiest_guard * sleepiest_minute
 
 
 def day04b():
@@ -172,33 +149,16 @@ def day04b():
         guard = int(shift[0].split()[3][1:])
         num_cycles = len(shift) // 2
 
-        time = []
         for i in range(num_cycles):
-            time.append(int(shift[2 * i + 1].split(":")[1].split("]")[0]))
-            time.append(int(shift[2 * i + 2].split(":")[1].split("]")[0]))
-
-        try:
-            guards[guard] += time
-        except KeyError:
-            guards[guard] = time
-
-    minutes_asleep = {}
-
-    for guard, times in guards.items():
-        for i in range(len(times) // 2):
-            try:
-                minutes_asleep[guard] += list(range(times[2 * i],
-                                                    times[2 * i + 1]))
-            except KeyError:
-                minutes_asleep[guard] = list(range(times[2 * i],
-                                                   times[2 * i + 1]))
+            start_time = int(shift[2 * i + 1].split(":")[1].split("]")[0])
+            end_time = int(shift[2 * i + 2].split(":")[1].split("]")[0])
+            guards[guard] = guards.get(guard, []) + list(range(start_time, end_time))
 
     most_days = 0
     most_guard = 0
     most_minute = 0
 
-    for guard, minutes in minutes_asleep.items():
-        days = 0
+    for guard, minutes in guards.items():
         for m in minutes:
             if minutes.count(m) > most_days:
                 most_days = minutes.count(m)
