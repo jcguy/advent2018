@@ -73,7 +73,7 @@ def day03a():
 
 def day03b():
     claims = read_input('input.03')
-    fabric = {}
+    fabric = [[[] for _ in range(1000)] for _ in range(1000)]
 
     idents = set()
 
@@ -86,14 +86,126 @@ def day03b():
 
         for ix in range(x, x + w):
             for iy in range(y, y + l):
-                fabric[(ix, iy)] = fabric.get((ix, iy), [])
-                fabric[(ix, iy)].append(ident)
-
-    for overlap in filter(lambda x: len(x) > 1, fabric.values()):
-        for ident in overlap:
-            idents.discard(ident)
+                if len(fabric[ix][iy]) > 0:
+                    idents.discard(fabric[ix][iy][-1])
+                    idents.discard(ident)
+                    if len(idents) == 1:
+                        return idents.pop()
+                fabric[ix][iy].append(ident)
 
     return idents.pop()
+
+
+def day04a():
+    times = sorted(read_input("input.04"))
+
+    shifts = []
+
+    for time in times:
+        if "Guard" in time:
+            shifts.append([time])
+        elif "asleep" in time or "wakes" in time:
+            shifts[-1].append(time)
+
+    guards = {}
+
+    for shift in shifts:
+        guard = int(shift[0].split()[3][1:])
+        num_cycles = len(shift) // 2
+
+        time = []
+        for i in range(num_cycles):
+            time.append(int(shift[2 * i + 1].split(":")[1].split("]")[0]))
+            time.append(int(shift[2 * i + 2].split(":")[1].split("]")[0]))
+
+        try:
+            guards[guard] += time
+        except KeyError:
+            guards[guard] = time
+
+    sleep_lengths = {}
+    for guard, times in guards.items():
+        for i in range(len(times) // 2):
+            try:
+                sleep_lengths[guard] += times[2 * i + 1] - times[2 * i]
+            except KeyError:
+                sleep_lengths[guard] = times[2 * i + 1] - times[2 * i]
+
+    sleepiest_guard = 0
+    guard_minutes = 0
+
+    for guard, length in sleep_lengths.items():
+        if length > guard_minutes:
+            sleepiest_guard = guard
+            guard_minutes = length
+
+    sleepiest_minute = 0
+    days_slept = 0
+
+    for minute in range(60):
+        num_days = 0
+        for i in range(len(guards[sleepiest_guard]) // 2):
+            if minute in range(guards[sleepiest_guard][2 * i],
+                               guards[sleepiest_guard][2 * i + 1]):
+                num_days += 1
+        if num_days > days_slept:
+            days_slept = num_days
+            sleepiest_minute = minute
+
+    return sleepiest_minute * sleepiest_guard
+
+
+def day04b():
+    times = sorted(read_input("input.04"))
+
+    shifts = []
+
+    for time in times:
+        if "Guard" in time:
+            shifts.append([time])
+        elif "asleep" in time or "wakes" in time:
+            shifts[-1].append(time)
+
+    guards = {}
+
+    for shift in shifts:
+        guard = int(shift[0].split()[3][1:])
+        num_cycles = len(shift) // 2
+
+        time = []
+        for i in range(num_cycles):
+            time.append(int(shift[2 * i + 1].split(":")[1].split("]")[0]))
+            time.append(int(shift[2 * i + 2].split(":")[1].split("]")[0]))
+
+        try:
+            guards[guard] += time
+        except KeyError:
+            guards[guard] = time
+
+    minutes_asleep = {}
+
+    for guard, times in guards.items():
+        for i in range(len(times) // 2):
+            try:
+                minutes_asleep[guard] += list(range(times[2 * i],
+                                                    times[2 * i + 1]))
+            except KeyError:
+                minutes_asleep[guard] = list(range(times[2 * i],
+                                                   times[2 * i + 1]))
+
+    most_days = 0
+    most_guard = 0
+    most_minute = 0
+
+    for guard, minutes in minutes_asleep.items():
+        days = 0
+        for m in minutes:
+            if minutes.count(m) > most_days:
+                most_days = minutes.count(m)
+                most_guard = guard
+                most_minute = m
+
+    return most_guard * most_minute
 
 
 def main(argv):
@@ -104,6 +216,8 @@ def main(argv):
         day02b,
         day03a,
         day03b,
+        day04a,
+        day04b,
     ]
 
     if len(argv) == 1:
@@ -122,12 +236,14 @@ def main(argv):
             print(solutions[2 * day - 1]())
 
 
-in_emacs = True
-if __name__ == "__main__":
-    import sys
-    main(sys.argv)
-    in_emacs = False
+main(["", 4])
 
-if in_emacs:
-    print()
-    main(["", "3"])
+# in_emacs = True
+# if __name__ == "__main__":
+#     import sys
+#     main(sys.argv)
+#     in_emacs = False
+
+# if in_emacs:
+#     print()
+#     main(["", "3"])
