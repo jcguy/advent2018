@@ -28,4 +28,4 @@ def b():
     for unit in ascii_lowercase:
         lengths.append(len(react([u for u in polymer if u.lower() != unit])))
 
-    return ascii_lowercase[lengths.index(min(lengths))], min(lengths)
+    return min(lengths)
