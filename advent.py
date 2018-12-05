@@ -168,6 +168,36 @@ def day04b():
     return most_guard * most_minute
 
 
+def react(polymer):
+    stack = []
+
+    for unit in polymer:
+        if not stack:
+            stack.append(unit)
+        elif unit != stack[-1] and unit.lower() == stack[-1].lower():
+            stack.pop()
+        else:
+            stack.append(unit)
+
+    return stack
+
+
+def day05a():
+    polymer = read_input("input.05")[0]
+    return len(react(polymer))
+
+
+def day05b():
+    from string import ascii_lowercase
+    polymer = read_input("input.05")[0]
+    lengths = []
+
+    for unit in ascii_lowercase:
+        lengths.append(len(react([u for u in polymer if u.lower() != unit])))
+
+    return ascii_lowercase[lengths.index(min(lengths))], min(lengths)
+
+
 def main(argv):
     solutions = [
         day01a,
@@ -178,6 +208,8 @@ def main(argv):
         day03b,
         day04a,
         day04b,
+        day05a,
+        day05b,
     ]
 
     if len(argv) == 1:
@@ -196,7 +228,7 @@ def main(argv):
             print(solutions[2 * day - 1]())
 
 
-main(["", 4])
+main(["", 5])
 
 # in_emacs = True
 # if __name__ == "__main__":
