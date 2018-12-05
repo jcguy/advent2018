@@ -1,4 +1,4 @@
-# Main solutions.
+# Main solutions
 
 All solutions:
     `./advent.py`
