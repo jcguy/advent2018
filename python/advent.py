@@ -4,6 +4,7 @@ import day02
 import day03
 import day04
 import day05
+import day06
 
 
 def main(argv):
@@ -18,6 +19,8 @@ def main(argv):
         day04.b,
         day05.a,
         day05.b,
+        day06.a,
+        day06.b,
     ]
 
     if len(argv) == 1:

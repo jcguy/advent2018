@@ -7,7 +7,7 @@ def react(polymer):
     for unit in polymer:
         if not stack:
             stack.append(unit)
-        elif unit != stack[-1] and unit.lower() == stack[-1].lower():
+        elif (ord(unit) ^ ord(stack[-1])) == 32:
             stack.pop()
         else:
             stack.append(unit)
@@ -22,7 +22,7 @@ def a():
 
 def b():
     from string import ascii_lowercase
-    polymer = read_input(5)[0]
+    polymer = react(read_input(5)[0])
     lengths = []
 
     for unit in ascii_lowercase:
