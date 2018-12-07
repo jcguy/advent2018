@@ -3,7 +3,7 @@ from queue import PriorityQueue
 from InputReader import read_input
 
 
-def a():
+def read_graph():
     edges = read_input(7)
     edges = [(edge[5], edge[36]) for edge in edges]
 
@@ -18,6 +18,11 @@ def a():
     for edge in edges:
         graph[edge[1]].append(edge[0])
 
+    return graph, nodes
+
+
+def a():
+    graph, _ = read_graph()
     q = PriorityQueue()
 
     for node, inc in graph.items():
@@ -38,64 +43,47 @@ def a():
     return process
 
 
+def get_time(step):
+    return 60 + ascii_uppercase.index(step) + 1
+
+
 def b():
-    steps = read_input(7)
-    steps = [[step[5], step[36]] for step in steps]
-
-    set_steps = set()
-
-    for step in steps:
-        set_steps.add(step[0])
-        set_steps.add(step[1])
-
-    graph = {step: [] for step in set_steps}
-
-    for step in steps:
-        graph[step[1]].append(step[0])
-
-    start = [step for step in graph.keys() if not graph[step]]
+    graph, nodes = read_graph()
 
     q = PriorityQueue()
 
-    for step in start:
-        q.put(step)
+    for node, inc in graph.items():
+        if not inc:
+            q.put(node)
 
-    workers = [0] * 5
-    worker_items = [None] * 5
+    seconds = -1
+    workers = [(0, None)] * 5
 
-    remaining = set()
-    for step0, step1 in graph.items():
-        remaining.add(step0)
-        for step in step1:
-            remaining.add(step)
-
-    for second in range(1000):
-        for i, worker in enumerate(workers):
-            if worker != 0:
+    while nodes or any(w[0] for w in workers):
+        for i, (time, item) in enumerate(workers):
+            if not time or not item:
                 continue
+            workers[i] = (time - 1, item)
 
-            if worker_items[i]:
-                for step in graph.keys():
-                    if worker_items[i] in graph[step]:
-                        graph[step].remove(worker_items[i])
-                        if not graph[step]:
-                            q.put(step)
-                worker_items[i] = None
+        for i, (time, item) in enumerate(workers):
+            if time or not item:
+                continue
+            for node, inc in graph.items():
+                if item in inc:
+                    inc.remove(item)
+                    if not inc:
+                        q.put(node)
+            nodes.discard(item)
+            workers[i] = (0, None)
 
-            if not q.empty():
-                item = q.get()
-                remaining.discard(item)
-                workers[i] = 60 + 1 + ascii_uppercase.index(item)
-                worker_items[i] = item
+        for i, (time, item) in enumerate(workers):
+            if not item and not q.empty():
+                next_item = q.get()
+                workers[i] = (get_time(next_item), next_item)
 
-        for i, worker in enumerate(workers):
-            if worker > 0:
-                workers[i] -= 1
+        seconds += 1
 
-        if not remaining and all(not worker for worker in workers):
-            break
-
-    return second
+    return seconds
 
 
 if __name__ == "__main__":
