@@ -4,37 +4,36 @@ from InputReader import read_input
 
 
 def a():
-    steps = read_input(7)
-    steps = [[step[5], step[36]] for step in steps]
+    edges = read_input(7)
+    edges = [(edge[5], edge[36]) for edge in edges]
 
-    set_steps = set()
+    nodes = set()
 
-    for step in steps:
-        set_steps.add(step[0])
-        set_steps.add(step[1])
+    for s, d in edges:
+        nodes.add(s)
+        nodes.add(d)
 
-    graph = {step: [] for step in set_steps}
+    graph = {node: [] for node in nodes}
 
-    for step in steps:
-        graph[step[1]].append(step[0])
-
-    start = [step for step in graph.keys() if not graph[step]]
+    for edge in edges:
+        graph[edge[1]].append(edge[0])
 
     q = PriorityQueue()
 
-    for step in start:
-        q.put(step)
+    for node, inc in graph.items():
+        if not inc:
+            q.put(node)
 
     process = ""
 
     while not q.empty():
         item = q.get()
         process += item
-        for step in graph.keys():
-            if item in graph[step]:
-                graph[step].remove(item)
-                if not graph[step]:
-                    q.put(step)
+        for node, inc in graph.items():
+            if item in inc:
+                graph[node].remove(item)
+                if not graph[node]:
+                    q.put(node)
 
     return process
 
@@ -97,3 +96,8 @@ def b():
             break
 
     return second
+
+
+if __name__ == "__main__":
+    print(a())
+    print(b())
