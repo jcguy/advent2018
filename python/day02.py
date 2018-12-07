@@ -28,3 +28,8 @@ def b():
         possible_matches |= new_set
 
     return None
+
+
+if __name__ == "__main__":
+    print(a())
+    print(b())

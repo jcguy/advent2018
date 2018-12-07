@@ -30,6 +30,7 @@ def b():
 
     for claim in claims:
         ident, _, xy, wl = claim.split()
+        ident = int(ident[1:])
         x, y = map(int, xy.strip(":").split(","))
         w, l = map(int, wl.split("x"))
 
@@ -45,3 +46,8 @@ def b():
                 fabric[ix][iy].append(ident)
 
     return idents.pop()
+
+
+if __name__ == "__main__":
+    print(a())
+    print(b())

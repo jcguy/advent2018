@@ -60,3 +60,8 @@ def b():
                 safe.append((x, y))
 
     return len(safe)
+
+
+if __name__ == "__main__":
+    print(a())
+    print(b())

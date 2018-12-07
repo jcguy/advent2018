@@ -71,3 +71,8 @@ def b():
                 most_minute = m
 
     return most_guard * most_minute
+
+
+if __name__ == "__main__":
+    print(a())
+    print(b())

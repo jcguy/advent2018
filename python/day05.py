@@ -29,3 +29,8 @@ def b():
         lengths.append(len(react([u for u in polymer if u.lower() != unit])))
 
     return min(lengths)
+
+
+if __name__ == "__main__":
+    print(a())
+    print(b())
