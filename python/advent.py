@@ -30,15 +30,23 @@ def main(argv):
     ]
 
     if len(argv) == 1:
+        day = 1
         for solution in solutions:
-            print(solution())
+            if solution.__name__ == "a":
+                print("Day {}:".format(day))
+            else:
+                day += 1
+            print("  Part {}: {}".format(solution.__name__, solution()))
     elif len(argv) == 2:
         day = int(argv[1])
-        print(solutions[2 * day - 2]())
-        print(solutions[2 * day - 1]())
+        print("Day {}:".format(day))
+        print("  Part {}: {}".format("a", solutions[2 * day - 2]()))
+        print("  Part {}: {}".format("b", solutions[2 * day - 1]()))
     elif len(argv) == 3:
         day = int(argv[1])
         part = argv[2]
+        print("Day {}:".format(day))
+        print("  Part {}: ".format(part), end="")
         if part == "a":
             print(solutions[2 * day - 2]())
         elif part == "b":
