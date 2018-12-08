@@ -5,40 +5,33 @@ def process_node(stack):
     num_children = stack.pop()
     num_meta = stack.pop()
 
+    child_values = [process_node(stack) for _ in range(num_children)]
+    meta = [stack.pop() for _ in range(num_meta)]
+
     value = 0
 
-    children_values = []
-    for _ in range(num_children):
-        children_values.append(process_node(stack))
+    value = sum(child_values[m - 1][1]
+                for m in meta
+                if 0 <= m - 1 < len(child_values))
 
-    meta = []
-    for _ in range(num_meta):
-        meta.append(stack.pop())
-
-    if not num_children:
+    if not child_values:
         value = sum(meta)
-    else:
-        for m in meta:
-            if 0 <= m - 1 < len(children_values):
-                value += children_values[m - 1][1]
 
-    return sum(meta) + sum(c[0] for c in children_values), value
+    return sum(meta) + sum(c[0] for c in child_values), value
 
 
 def a():
     inp = read_input(8)[0]
-    inp = list(map(int, inp.split()))
-    stack = inp[::-1]
+    stack = list(map(int, inp.split()))[::-1]
 
-    meta_data_sum, _ = process_node(stack)
+    meta_sum, _ = process_node(stack)
 
-    return meta_data_sum
+    return meta_sum
 
 
 def b():
     inp = read_input(8)[0]
-    inp = list(map(int, inp.split()))
-    stack = inp[::-1]
+    stack = list(map(int, inp.split()))[::-1]
 
     _, value = process_node(stack)
 
