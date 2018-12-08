@@ -22,7 +22,7 @@ def process_node(stack):
             if m - 1 < len(children_values):
                 value += children_values[m - 1][1]
 
-    return sum(meta) + sum([c[0] for c in children_values]), value
+    return sum(meta) + sum(c[0] for c in children_values), value
 
 
 def a():
