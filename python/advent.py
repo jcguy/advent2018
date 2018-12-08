@@ -51,16 +51,19 @@ def run_solution(solution, time=False):
             break
 
     print("Day {}, part {}:".format(solution.__module__[-2:],
-                                    solution.__name__))
+                                    solution.__name__),
+          end="  ")
+    # print("Day {}, part {}:".format(solution.__module__[-2:],
+    #                                 solution.__name__))
 
     # in ms
     mean_rt = mean(run_times) / 1e6
-    median_rt = median(run_times) / 1e6
-    stdev_rt = stdev(run_times) / 1e6
+    # median_rt = median(run_times) / 1e6
+    # stdev_rt = stdev(run_times) / 1e6
 
-    print("\tmean:  \t {:6.2f} ms".format(mean_rt))
-    print("\tmedian:\t {:6.2f} ms".format(median_rt))
-    print("\tstdev: \t {:6.2f} ms".format(stdev_rt))
+    print("{:6.2f} ms".format(mean_rt))
+    # print("\tmedian:\t {:6.2f} ms".format(median_rt))
+    # print("\tstdev: \t {:6.2f} ms".format(stdev_rt))
 
 
 def get_solutions(argv):
