@@ -2,22 +2,20 @@ from InputReader import read_input
 
 
 def process_node(stack):
-    num_children = stack.pop()
+    num_child = stack.pop()
     num_meta = stack.pop()
 
-    child_values = [process_node(stack) for _ in range(num_children)]
+    children = [process_node(stack) for _ in range(num_child)]
     meta = [stack.pop() for _ in range(num_meta)]
 
-    value = 0
-
-    value = sum(child_values[m - 1][1]
+    value = sum(children[m - 1][1]
                 for m in meta
-                if 0 <= m - 1 < len(child_values))
+                if 0 < m <= len(children))
 
-    if not child_values:
+    if not children:
         value = sum(meta)
 
-    return sum(meta) + sum(c[0] for c in child_values), value
+    return sum(meta) + sum(c[0] for c in children), value
 
 
 def a():
