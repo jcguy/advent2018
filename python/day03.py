@@ -24,7 +24,7 @@ def a():
 
 def b():
     claims = read_input(3)
-    fabric = [[[] for _ in range(1000)] for _ in range(1000)]
+    fabric = [[0 for _ in range(1000)] for _ in range(1000)]
 
     idents = set()
 
@@ -39,11 +39,12 @@ def b():
         for ix in range(x, x + w):
             for iy in range(y, y + l):
                 if fabric[ix][iy]:
-                    idents.discard(fabric[ix][iy][-1])
+                    idents.discard(fabric[ix][iy])
                     idents.discard(ident)
                     if len(idents) == 1:
                         return idents.pop()
-                fabric[ix][iy].append(ident)
+                else:
+                    fabric[ix][iy] = ident
 
     return idents.pop()
 
