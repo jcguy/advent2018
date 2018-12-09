@@ -53,8 +53,8 @@ def b():
 
     safe = []
 
-    for x in range(min_x - 10, max_x + 10):
-        for y in range(min_y - 10, max_y + 10):
+    for x in range(min_x, max_x):
+        for y in range(min_y, max_y):
             total_distance = sum(man_dist((x, y), pos) for pos in coords)
             if total_distance < 10000:
                 safe.append((x, y))
