@@ -41,32 +41,43 @@ def run_solution(solution, time=False):
         return
 
     from statistics import mean, median, stdev
-    from time import clock_gettime_ns, CLOCK_MONOTONIC
+    from sys import version_info
+    from time import CLOCK_MONOTONIC
+
+    if version_info[1] == 7:
+        from time import clock_gettime_ns
+        clock = clock_gettime_ns
+        factor = 1e9
+    else:
+        from time import clock_gettime
+        clock = clock_gettime
+        factor = 1
 
     run_times = []
     for _ in range(100):
-        start_time = clock_gettime_ns(CLOCK_MONOTONIC)
+        start_time = clock(CLOCK_MONOTONIC)
         solution()
-        end_time = clock_gettime_ns(CLOCK_MONOTONIC)
+        end_time = clock(CLOCK_MONOTONIC)
         run_times.append(end_time - start_time)
 
-        if (sum(run_times) / 1e9) > 10:
+        if (sum(run_times) / factor) > 30:
             break
 
-    print("Day {}, part {}:".format(solution.__module__[-2:],
-                                    solution.__name__),
-          end="  ")
     # print("Day {}, part {}:".format(solution.__module__[-2:],
-    #                                 solution.__name__))
+    #                                 solution.__name__),
+    #       end="  ")
+    print("Day {}, part {}:".format(solution.__module__[-2:],
+                                    solution.__name__))
 
     # in ms
-    mean_rt = mean(run_times) / 1e6
-    # median_rt = median(run_times) / 1e6
-    # stdev_rt = stdev(run_times) / 1e6
+    mean_rt = mean(run_times) * 1e3 / factor
+    median_rt = median(run_times) * 1e3 / factor
+    stdev_rt = stdev(run_times) * 1e3 / factor
 
-    print("{:6.2f} ms".format(mean_rt))
-    # print("\tmedian:\t {:6.2f} ms".format(median_rt))
-    # print("\tstdev: \t {:6.2f} ms".format(stdev_rt))
+    # print("{:10.2f} ms".format(mean_rt))
+    print("\tmean:\t {:10.2f} ms".format(mean_rt))
+    print("\tmedian:\t {:10.2f} ms".format(median_rt))
+    print("\tstdev: \t {:10.2f} ms".format(stdev_rt))
 
 
 def get_solutions(argv):
