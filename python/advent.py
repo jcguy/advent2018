@@ -7,6 +7,7 @@ import day05
 import day06
 import day07
 import day08
+import day09
 
 
 solutions = [
@@ -26,6 +27,8 @@ solutions = [
     day07.b,
     day08.a,
     day08.b,
+    day09.a,
+    day09.b,
 ]
 
 

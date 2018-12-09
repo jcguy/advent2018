@@ -1,6 +1,5 @@
 from InputReader import read_input
 import re
-from queue import PriorityQueue
 
 
 class Node:
@@ -44,13 +43,9 @@ class LinkedList:
         return value
 
 
-def a():
-    inp = read_input(9)[0]
-    num_players, highest_marble = map(int, re.match(r"(\d+)[^\d]+(\d+)", inp).groups())
+def solve(num_players, highest_marble):
     scores = [0] * num_players
-
     circle = LinkedList(0)
-
     player = 0
 
     for marble in range(1, highest_marble + 1):
@@ -66,32 +61,18 @@ def a():
         player %= num_players
 
     return max(scores)
+
+
+def a():
+    inp = read_input(9)[0]
+    n, m = map(int, re.match(r"(\d+)[^\d]+(\d+)", inp).groups())
+    return solve(n, m)
 
 
 def b():
     inp = read_input(9)[0]
-    num_players, highest_marble = map(int, re.match(r"(\d+)[^\d]+(\d+)", inp).groups())
-    scores = [0] * num_players
-
-    highest_marble *= 100
-
-    circle = LinkedList(0)
-
-    player = 0
-
-    for marble in range(1, highest_marble + 1):
-        if marble % 23 == 0:
-            scores[player] += marble
-            circle.cycle(-7)
-            scores[player] += circle.delete()
-        else:
-            circle.cycle(1)
-            circle.insert(marble)
-
-        player += 1
-        player %= num_players
-
-    return max(scores)
+    n, m = map(int, re.match(r"(\d+)[^\d]+(\d+)", inp).groups())
+    return solve(n, m * 100)
 
 
 if __name__ == "__main__":
