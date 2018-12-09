@@ -5,7 +5,6 @@ import re
 
 def solve(num_players, highest_marble):
     scores = [0] * num_players
-    player = 0
     circle = deque([0])
 
     for marble in range(1, highest_marble + 1):
@@ -14,26 +13,25 @@ def solve(num_players, highest_marble):
             circle.append(marble)
         else:
             circle.rotate(7)
-            scores[player] += circle.pop() + marble
+            scores[marble % num_players] += circle.pop() + marble
             circle.rotate(-1)
-
-        player = (player + 1) % num_players
 
     return max(scores)
 
 
 def a():
     inp = read_input(9)[0]
-    n, m = map(int, re.match(r"(\d+)[^\d]+(\d+)", inp).groups())
+    n, m = map(int, re.findall(r"\d+", inp))
     return solve(n, m)
 
 
 def b():
     inp = read_input(9)[0]
-    n, m = map(int, re.match(r"(\d+)[^\d]+(\d+)", inp).groups())
+    n, m = map(int, re.findall(r"\d+", inp))
     return solve(n, m * 100)
 
 
 if __name__ == "__main__":
-    print(a())
-    print(b())
+    from advent import run_solution
+    run_solution(a, True)
+    run_solution(b, True)
